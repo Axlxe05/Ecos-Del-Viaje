@@ -17,8 +17,9 @@ public class Jugador : MonoBehaviour
     // variables salto
     public float jumpForce = 5f; // Fuerza del salto
     private bool isGrounded; // Verifica si el personaje está en el suelo
-
+    
     public GameObject madera;
+
 
     void Start()
     {
@@ -38,6 +39,7 @@ public class Jugador : MonoBehaviour
     public void OnMove(InputValue value)
     {
         velocity = value.Get<Vector2>();
+        Debug.Log("Movimiento detectado: " + velocity);
     }
     
     // Método para capturar el movimiento del ratón
