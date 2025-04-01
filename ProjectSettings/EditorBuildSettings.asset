@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/RegisterPlayerMenu.unity
     guid: 04cc4c7d767a9e14da6abf87fbe322d5
   - enabled: 1
+    path: Assets/Scenes/VideoBosque.unity
+    guid: 4304194cf670d6646a3002a0e6f970d9
+  - enabled: 1
     path: Assets/Scenes/Nivel 1.unity
     guid: 2a61e89262c7eec4582d33596eac96b3
   - enabled: 1

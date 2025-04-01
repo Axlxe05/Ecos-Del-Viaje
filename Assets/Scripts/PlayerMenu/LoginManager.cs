@@ -61,7 +61,7 @@ public class LoginManager : MonoBehaviour
                 if (usuarioValido)
                 {
                     Debug.Log("Login correcto");
-                    SceneManager.LoadScene("Nivel 1"); // Cambia "Nivel 1" por tu escena
+                    SceneManager.LoadScene("VideoBosque"); 
                 }
                 else
                 {

@@ -27,7 +27,7 @@ public class MusicManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Detener la música si la escena cargada es "Nivel 1"
-        if (scene.name == "Nivel 1" && audioSource != null)
+        if (scene.name == "VideoBosque" && audioSource != null)
         {
             audioSource.Stop();
             
