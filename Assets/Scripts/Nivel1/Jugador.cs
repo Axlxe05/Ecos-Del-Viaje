@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 public class Jugador : MonoBehaviour
 {
     private Rigidbody rb;
-    public float speed = 5f;
-    public float sprintSpeed = 15f;
+    public float speed = 2f;
+    public float sprintSpeed = 7f;
     private float currentSpeed;
     public Vector2 velocity;
 
@@ -25,23 +25,23 @@ public class Jugador : MonoBehaviour
     private Vector3 firstPersonOffset = new Vector3(0, 1.5f, 0); // Offset para primera persona
     private Vector3 thirdPersonOffset = new Vector3(0, 2.0f, -5.0f); // Offset para tercera persona
     public float smoothSpeed = 5.0f; // Velocidad de transición
-
-    // Animator
+    
+    // Añade estas variables al inicio de tu clase
     private Animator animator;
+    private bool isWalking;
 
+
+    void Awake()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
+    
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         currentSpeed = speed;
         Cursor.lockState = CursorLockMode.Locked;
-
-        // Obtener el componente Animator del hijo DummyModel_Male
-        animator = GetComponentInChildren<Animator>();
-
-        // Configura el Rigidbody
-        rb.interpolation = RigidbodyInterpolation.Interpolate; // Suaviza el movimiento
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // Mejora la detección de colisiones
-        rb.freezeRotation = true; // Congela la rotación en X y Z
+        
     }
 
     void FixedUpdate()
@@ -84,9 +84,9 @@ public class Jugador : MonoBehaviour
 
         // Rotación de la cámara y el personaje
         RotateCameraAndPlayer();
-
-        // Controlar la animación de caminar
-        ControlarAnimacionCaminar();
+        
+        UpdateAnimations();
+        
     }
 
     void MoveCamera(Vector3 targetOffset)
@@ -145,19 +145,6 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    void ControlarAnimacionCaminar()
-    {
-        // Activar o desactivar la animación de caminar según si el jugador se está moviendo
-        if (velocity.magnitude > 0.1f) // Si el jugador se está moviendo
-        {
-            animator.SetBool("isWalking", true);
-        }
-        else // Si el jugador está quieto
-        {
-            animator.SetBool("isWalking", false);
-        }
-    }
-
     public void OnMove(InputValue value)
     {
         velocity = value.Get<Vector2>();
@@ -200,5 +187,19 @@ public class Jugador : MonoBehaviour
         {
             Destroy(madera);
         }
+    }
+    
+    public void UpdateAnimations()
+    {
+        
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            animator.SetBool("Walk", true);
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            animator.SetBool("Walk", false);
+        }
+        
     }
 }
