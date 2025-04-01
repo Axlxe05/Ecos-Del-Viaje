@@ -8,6 +8,7 @@ public class JugadorDesierto : MonoBehaviour
     public float sprintSpeed = 15f;
     private float currentSpeed;
     public Vector2 velocity;
+    public Transform groundCheckPoint;
 
     // Variables para la rotación de la cámara
     public float mouseSensitivity = 25f;
@@ -36,15 +37,14 @@ public class JugadorDesierto : MonoBehaviour
 
         // Obtener el componente Animator del hijo DummyModel_Male
         animator = GetComponentInChildren<Animator>();
-
-        // Configura el Rigidbody
-        rb.interpolation = RigidbodyInterpolation.Interpolate; // Suaviza el movimiento
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; // Mejora la detección de colisiones
-        rb.freezeRotation = true; // Congela la rotación en X y Z
+        
     }
 
     void FixedUpdate()
     {
+        
+        Debug.DrawRay(transform.position, transform.forward * 5f, Color.red, 0.1f);
+        
         // Movimiento del jugador
         Vector3 movement = new Vector3(velocity.x * currentSpeed, rb.linearVelocity.y, velocity.y * currentSpeed);
         rb.linearVelocity = transform.TransformDirection(movement);
@@ -166,9 +166,9 @@ public class JugadorDesierto : MonoBehaviour
     // Método para verificar si el personaje está en el suelo
     private void checkGrounded()
     {
-        // Lanzar un rayo hacia abajo para detectar el suelo
-        float rayDistance = 1.1f; // Distancia del rayo (ajusta según el tamaño del personaje)
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, rayDistance);
+        float rayDistance = 1f; // Distancia razonable
+        Debug.DrawRay(groundCheckPoint.position, -groundCheckPoint.up * rayDistance, Color.cyan, 0.1f);
+        isGrounded = Physics.Raycast(groundCheckPoint.position, -groundCheckPoint.up, rayDistance);
     }
 
     // Método para el salto
