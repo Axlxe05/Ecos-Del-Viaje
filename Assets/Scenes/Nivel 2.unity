@@ -416,7 +416,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7916202241214363750, guid: f7cfd4c5a64ae1c44916dba2a8e1373d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2045479686}
   m_SourcePrefab: {fileID: 100100000, guid: f7cfd4c5a64ae1c44916dba2a8e1373d, type: 3}
 --- !u!1 &607839864
 GameObject:
@@ -550,10 +553,16 @@ MonoBehaviour:
   speed: 5
   sprintSpeed: 15
   velocity: {x: 0, y: 0}
+  groundCheckPoint: {fileID: 713296909}
   mouseSensitivity: 25
   cameraTransform: {fileID: 647220}
   jumpForce: 5
   smoothSpeed: 5
+--- !u!4 &713296909 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6833281058644797610, guid: 0be4e1c6b7e874042a041c429a847e87, type: 3}
+  m_PrefabInstance: {fileID: 1799132560}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &875763719
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,6 +716,11 @@ Transform:
   - {fileID: 2045479683}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1529551658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7916202241214363750, guid: f7cfd4c5a64ae1c44916dba2a8e1373d, type: 3}
+  m_PrefabInstance: {fileID: 421867227}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1799132560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -794,6 +808,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8707653646559875189, guid: f7cfd4c5a64ae1c44916dba2a8e1373d, type: 3}
   m_PrefabInstance: {fileID: 421867227}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &2045479686
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529551658}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1453043773871479701, guid: 589efb82e39695d4c8c9d3069a07fb5c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
