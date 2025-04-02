@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 public class Jugador : MonoBehaviour
 {
     private static readonly int Velocity = Animator.StringToHash("velocity");
+    private static readonly int Attack = Animator.StringToHash("attack");
+    private static readonly int Jump = Animator.StringToHash("jump");
     private Rigidbody rb;
     public float speed = 2f;
     public float sprintSpeed = 7f;
@@ -30,7 +32,9 @@ public class Jugador : MonoBehaviour
     // Añade estas variables al inicio de tu clase
     private Animator animator;
     private bool isWalking;
-
+    
+    //variables ataque
+    private bool atacando = true;
 
     void Awake()
     {
@@ -61,6 +65,8 @@ public class Jugador : MonoBehaviour
 
         //Assign animator velocity variable with rigidbody velocity
         animator.SetFloat(Velocity, rb.linearVelocity.magnitude);
+        
+        animator.SetFloat(Jump, rb.linearVelocity.y);
 
         checkGrounded();
 
@@ -173,6 +179,12 @@ public class Jugador : MonoBehaviour
         {
             currentSpeed = speed;
         }
+    }
+
+    public void OnAttack(InputValue value)
+    {
+        
+
     }
 
     public void objetivo()
