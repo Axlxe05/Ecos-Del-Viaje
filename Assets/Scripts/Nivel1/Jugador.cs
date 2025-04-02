@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Jugador : MonoBehaviour
 {
+    private static readonly int Velocity = Animator.StringToHash("velocity");
     private Rigidbody rb;
     public float speed = 2f;
     public float sprintSpeed = 7f;
@@ -22,10 +23,10 @@ public class Jugador : MonoBehaviour
 
     // Variables para el cambio de cámara
     private bool isFirstPerson = true; // Estado actual de la cámara
-    private Vector3 firstPersonOffset = new Vector3(0, 1.5f, 0); // Offset para primera persona
-    private Vector3 thirdPersonOffset = new Vector3(0, 2.0f, -5.0f); // Offset para tercera persona
+    private Vector3 firstPersonOffset = new(0, 1.5f, 0); // Offset para primera persona
+    private Vector3 thirdPersonOffset = new(0, 2.0f, -5.0f); // Offset para tercera persona
     public float smoothSpeed = 5.0f; // Velocidad de transición
-    
+
     // Añade estas variables al inicio de tu clase
     private Animator animator;
     private bool isWalking;
@@ -35,13 +36,13 @@ public class Jugador : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
     }
-    
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         currentSpeed = speed;
         Cursor.lockState = CursorLockMode.Locked;
-        
+
     }
 
     void FixedUpdate()
@@ -58,45 +59,20 @@ public class Jugador : MonoBehaviour
             rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
         }
 
+        //Assign animator velocity variable with rigidbody velocity
+        animator.SetFloat(Velocity, rb.linearVelocity.magnitude);
+
         checkGrounded();
-        
-        // Cambiar entre primera y tercera persona al presionar F5
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            isFirstPerson = !isFirstPerson; // Alternar entre modos
-
-            // Reiniciar la rotación vertical de la cámara al cambiar a primera persona
-            if (isFirstPerson)
-            {
-                xRotation = 0f; // Reiniciar la rotación vertical
-            }
-        }
-
-        // Mover la cámara al modo correspondiente
-        if (isFirstPerson)
-        {
-            MoveCamera(firstPersonOffset);
-        }
-        else
-        {
-            MoveCamera(thirdPersonOffset);
-        }
 
         // Rotación de la cámara y el personaje
         RotateCameraAndPlayer();
-        
-        UpdateAnimations();
-        
     }
 
     void MoveCamera(Vector3 targetOffset)
     {
         // Calcular la posición deseada de la cámara
         Vector3 desiredPosition = transform.position + transform.TransformDirection(targetOffset);
-
-        // Suavizar el movimiento de la cámara
-        Vector3 smoothedPosition = Vector3.Lerp(cameraTransform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-        cameraTransform.position = smoothedPosition;
+        cameraTransform.position = desiredPosition;
 
         // En tercera persona, la cámara siempre mira hacia el jugador
         if (!isFirstPerson)
@@ -151,7 +127,25 @@ public class Jugador : MonoBehaviour
         Debug.Log("Movimiento detectado: " + velocity);
     }
 
-    // Método para verificar si el personaje está en el suelo
+    public void OnChangeCamera(InputValue value)
+    {
+        // Mover la cámara al modo correspondiente
+        if (!isFirstPerson)
+        {
+            xRotation = 0f; // Reiniciar la rotación vertical
+            MoveCamera(firstPersonOffset);
+            print("Entering first person mode");
+            isFirstPerson = true;
+        }
+        else
+        {
+            MoveCamera(thirdPersonOffset);
+            print("Entering third person mode");
+            isFirstPerson = false;
+        }
+    }
+
+// Método para verificar si el personaje está en el suelo
     private void checkGrounded()
     {
         // Lanzar un rayo hacia abajo para detectar el suelo
@@ -187,19 +181,5 @@ public class Jugador : MonoBehaviour
         {
             Destroy(madera);
         }
-    }
-    
-    public void UpdateAnimations()
-    {
-        
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            animator.SetBool("Walk", true);
-        }
-        if (Input.GetKeyUp(KeyCode.W))
-        {
-            animator.SetBool("Walk", false);
-        }
-        
     }
 }
