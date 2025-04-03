@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
     
     [Header("Referencias UI")]
-    public GameObject panel;  // Panel principal
+    public GameObject panel;
     public Slider brilloSlider;
     public Slider volumenSlider;
     public Dropdown graftcosDropdown;
@@ -16,9 +22,14 @@ public class MenuManager : MonoBehaviour
     public Button menuPrincipalButton;
     
     [Header("Configuración")]
-    public bool pausarJuego = true; // Si debe pausar el juego al mostrar menú
+    public bool pausarJuego = true;
+    
+    [Header("Post-Processing")]
+    public PostProcessVolume postProcessVolume;
     
     private bool isPaused = false;
+    private ColorGrading colorGrading;
+    private PostProcessProfile profile;
 
     void Awake()
     {
@@ -26,11 +37,13 @@ public class MenuManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            EnsureActiveState(); // Garantizar estado correcto
+            InitializePostProcessing();
+            EnsureActiveState();
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
     }
 
@@ -38,45 +51,70 @@ public class MenuManager : MonoBehaviour
     {
         InitializeUI();
         LoadSettings();
-        panel.SetActive(false); // Asegurar que empiece oculto
+        panel.SetActive(false);
     }
 
-    public void OnJump(InputValue value)
+    public void OnMenuSettings(InputValue value)
     {
         TogglePauseMenu();
     }
 
+    private void InitializePostProcessing()
+    {
+        // Crear nuevo volumen si no existe
+        if (postProcessVolume == null)
+        {
+            var volumeObj = new GameObject("PostProcess Volume");
+            postProcessVolume = volumeObj.AddComponent<PostProcessVolume>();
+            postProcessVolume.isGlobal = true;
+            volumeObj.transform.SetParent(transform);
+        }
+
+        // Crear nuevo perfil si no existe
+        if (postProcessVolume.profile == null)
+        {
+            profile = ScriptableObject.CreateInstance<PostProcessProfile>();
+            postProcessVolume.profile = profile;
+        }
+        else
+        {
+            profile = postProcessVolume.profile;
+        }
+
+        // Obtener o crear ColorGrading
+        if (!profile.TryGetSettings(out colorGrading))
+        {
+            colorGrading = profile.AddSettings<ColorGrading>();
+            colorGrading.enabled.Override(true);
+            colorGrading.gradingMode.Override(GradingMode.LowDefinitionRange);
+            Debug.Log("ColorGrading añadido al perfil");
+        }
+    }
+
     private void EnsureActiveState()
     {
-        // Asegurar que el GameObject principal está activo
         if (!gameObject.activeSelf) gameObject.SetActive(true);
-        
-        // Asegurar que el Canvas está activo
         var canvas = GetComponent<Canvas>();
         if (canvas != null) canvas.enabled = true;
     }
 
     private void InitializeUI()
     {
-        // Configurar listeners
         continuarButton?.onClick.AddListener(TogglePauseMenu);
         menuPrincipalButton?.onClick.AddListener(ReturnToMainMenu);
         
-        if (brilloSlider != null) brilloSlider.onValueChanged.AddListener(SetBrightness);
-        if (volumenSlider != null) volumenSlider.onValueChanged.AddListener(SetVolume);
-        if (graftcosDropdown != null) graftcosDropdown.onValueChanged.AddListener(SetGraphicsQuality);
+        brilloSlider?.onValueChanged.AddListener(SetBrightness);
+        volumenSlider?.onValueChanged.AddListener(SetVolume);
+        graftcosDropdown?.onValueChanged.AddListener(SetGraphicsQuality);
     }
 
     public void TogglePauseMenu()
     {
         isPaused = !isPaused;
         
-        // Activar/desactivar panel y sus hijos
         if (panel)
         {
             panel.SetActive(isPaused);
-            
-            // Activar todos los hijos por si alguno estaba desactivado individualmente
             if (isPaused)
             {
                 foreach (Transform child in panel.transform)
@@ -86,7 +124,6 @@ public class MenuManager : MonoBehaviour
             }
         }
 
-        // Manejar pausa del juego
         if (pausarJuego)
         {
             Time.timeScale = isPaused ? 0 : 1;
@@ -97,10 +134,18 @@ public class MenuManager : MonoBehaviour
 
     public void SetBrightness(float value)
     {
-        // Implementar ajuste de brillo
-        // Esto es un ejemplo básico - considera usar Post-Processing para mejor efecto
-        RenderSettings.ambientLight = new Color(value, value, value);
+        if (colorGrading == null)
+        {
+            Debug.LogError("ColorGrading no inicializado!");
+            return;
+        }
+
+        // Rango más efectivo para el brillo (-2 a 2)
+        float exposureValue = Mathf.Lerp(-2f, 2f, value);
+        colorGrading.postExposure.Override(exposureValue);
         PlayerPrefs.SetFloat("Brillo", value);
+        
+        Debug.Log($"Brillo actualizado: {value} -> {exposureValue}");
     }
 
     public void SetVolume(float value)
@@ -123,14 +168,17 @@ public class MenuManager : MonoBehaviour
 
     private void LoadSettings()
     {
-        // Cargar valores guardados o usar defaults
-        brilloSlider.value = PlayerPrefs.GetFloat("Brillo", 0.8f);
+        brilloSlider.value = PlayerPrefs.GetFloat("Brillo", 0.5f);
         volumenSlider.value = PlayerPrefs.GetFloat("Volumen", 1f);
         graftcosDropdown.value = PlayerPrefs.GetInt("CalidadGrafica", QualitySettings.GetQualityLevel());
         
-        // Aplicar los valores cargados
         SetBrightness(brilloSlider.value);
         SetVolume(volumenSlider.value);
         SetGraphicsQuality(graftcosDropdown.value);
+    }
+
+    void OnDisable()
+    {
+        PlayerPrefs.Save();
     }
 }
