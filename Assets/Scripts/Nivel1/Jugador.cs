@@ -35,6 +35,7 @@ public class Jugador : MonoBehaviour
     
     //variables ataque
     private bool atacando = true;
+    
 
     void Awake()
     {
@@ -181,11 +182,21 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    public void OnAttack(InputValue value)
-    {
-        
 
+    public void OnMenuSettings(InputValue value)
+    {
+        MenuManager menuManager = FindObjectOfType<MenuManager>(true);
+    
+        if (menuManager != null)
+        {
+            menuManager.TogglePauseMenu();  
+        }
+        else
+        {
+            Debug.LogError("MenuManager no encontrado en la escena");
+        }
     }
+    
 
     public void objetivo()
     {
