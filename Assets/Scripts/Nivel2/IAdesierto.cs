@@ -18,7 +18,7 @@ public class IAdesierto : MonoBehaviour
     public bool playerIsAttacking = false;
     private float nextUpdateTime;
 
-    void Update()
+    void FixedUpdate()
     {
         // Consulta al servidor en intervalos regulares
         if (Time.time >= nextUpdateTime)
@@ -36,7 +36,7 @@ public class IAdesierto : MonoBehaviour
         float distance = Vector3.Distance(transform.position, player.position);
     
         // Crear objeto JSON correctamente formateado
-        CombatData data = new CombatData
+        DatosCombate data = new DatosCombate
         {
             vida_enemigo = enemyHealth,
             distancia = distance,
@@ -57,7 +57,7 @@ public class IAdesierto : MonoBehaviour
         if (request.result == UnityWebRequest.Result.Success)
         {
             string response = request.downloadHandler.text;
-            CombatResponse responseData = JsonUtility.FromJson<CombatResponse>(response);
+            RespuestaCombate responseData = JsonUtility.FromJson<RespuestaCombate>(response);
         
             if (responseData.status == "success" && responseData.accion != previousAction)
             {
@@ -132,7 +132,7 @@ public class IAdesierto : MonoBehaviour
     }
 
     [System.Serializable]
-    public class CombatData
+    public class DatosCombate
     {
         public float vida_enemigo;
         public float distancia;
@@ -140,7 +140,7 @@ public class IAdesierto : MonoBehaviour
     }
 
     [System.Serializable]
-    public class CombatResponse
+    public class RespuestaCombate
     {
         public int accion;
         public string accion_texto;
