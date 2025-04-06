@@ -17,6 +17,12 @@ public class IAdesierto : MonoBehaviour
     [Range(0, 100)] public float enemyHealth = 100f;
     public bool playerIsAttacking = false;
     private float nextUpdateTime;
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void FixedUpdate()
     {
@@ -97,26 +103,26 @@ public class IAdesierto : MonoBehaviour
     void Attack()
     {
         // Tu lógica de ataque aquí
-        GetComponent<Animator>().SetTrigger("Attack");
+        animator.SetTrigger("Attack");
     }
 
     void MoveTowards(Vector3 target, float speed)
     {
         Vector3 direction = (target - transform.position).normalized;
-        transform.position += direction * speed * Time.deltaTime;
-        GetComponent<Animator>().SetBool("Moving", true);
+        transform.position += direction * (speed * Time.deltaTime);
+        animator.SetBool("Moving", true);
     }
 
     void FleeFrom(Vector3 danger, float speed)
     {
         Vector3 direction = (transform.position - danger).normalized;
-        transform.position += direction * speed * Time.deltaTime;
-        GetComponent<Animator>().SetBool("Moving", true);
+        transform.position += direction * (speed * Time.deltaTime);
+        animator.SetBool("Moving", true);
     }
 
     void Idle()
     {
-        GetComponent<Animator>().SetBool("Moving", false);
+        animator.SetBool("Moving", false);
     }
 
     // Llamar este método cuando el jugador ataque a este enemigo

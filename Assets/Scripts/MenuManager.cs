@@ -143,6 +143,7 @@ public class MenuManager : MonoBehaviour
         // Rango más efectivo para el brillo (-2 a 2)
         float exposureValue = Mathf.Lerp(-2f, 2f, value);
         colorGrading.postExposure.Override(exposureValue);
+        Screen.brightness = exposureValue;
         PlayerPrefs.SetFloat("Brillo", value);
         
         Debug.Log($"Brillo actualizado: {value} -> {exposureValue}");

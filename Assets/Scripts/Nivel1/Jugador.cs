@@ -7,18 +7,20 @@ public class Jugador : MonoBehaviour
     private static readonly int Velocity = Animator.StringToHash("velocity");
     private static readonly int Attack = Animator.StringToHash("attack");
     private static readonly int Jump = Animator.StringToHash("jump");
+    
     private Rigidbody rb;
+    [Header("Velocidad")]
     public float speed = 2f;
     public float sprintSpeed = 7f;
     private float currentSpeed;
     public Vector2 velocity;
 
-    // Variables para la rotación de la cámara
+    [Header("Rotacion Camera")]
     public float mouseSensitivity = 25f;
     public Transform cameraTransform; // Referencia al transform de la cámara
     private float xRotation = 0f; // Rotación vertical de la cámara
 
-    // Variables para el salto
+    [Header("Variables Salto")]
     public float jumpForce = 5f; // Fuerza del salto
     private bool isGrounded; // Verifica si el personaje está en el suelo
 
