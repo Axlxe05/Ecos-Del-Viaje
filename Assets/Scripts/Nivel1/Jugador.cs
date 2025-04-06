@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,9 +34,8 @@ public class Jugador : MonoBehaviour
     private Animator animator;
     private bool isWalking;
     
-    //variables ataque
-    private bool atacando = true;
-    
+    private bool attacking;
+
 
     void Awake()
     {
@@ -66,7 +66,7 @@ public class Jugador : MonoBehaviour
 
         //Assign animator velocity variable with rigidbody velocity
         animator.SetFloat(Velocity, rb.linearVelocity.magnitude);
-        
+
         animator.SetFloat(Jump, rb.linearVelocity.y);
 
         checkGrounded();
@@ -158,6 +158,11 @@ public class Jugador : MonoBehaviour
         // Lanzar un rayo hacia abajo para detectar el suelo
         float rayDistance = 1.1f; // Distancia del rayo (ajusta según el tamaño del personaje)
         isGrounded = Physics.Raycast(transform.position, Vector3.down, rayDistance);
+
+        if (isGrounded)
+        {
+            animator.SetBool(Jump, false);
+        }
     }
 
     // Método para el salto
@@ -165,6 +170,7 @@ public class Jugador : MonoBehaviour
     {
         if (isGrounded) // Solo saltar si está en el suelo
         {
+            animator.SetBool(Jump, true);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
@@ -186,19 +192,34 @@ public class Jugador : MonoBehaviour
     public void OnMenuSettings(InputValue value)
     {
         MenuManager menuManager = FindObjectOfType<MenuManager>(true);
-    
+
         if (menuManager != null)
         {
-            menuManager.TogglePauseMenu();  
+            menuManager.TogglePauseMenu();
         }
         else
         {
             Debug.LogError("MenuManager no encontrado en la escena");
         }
     }
-    
 
-    public void objetivo()
+    private IEnumerator Atacar()
+    {
+        attacking = true;
+        animator.SetBool(Attack, true);
+        yield return new WaitForSeconds(1.3f);
+        animator.SetBool(Attack, false);
+        attacking = false;
+        
+    }
+
+    public void OnAttack(InputValue value)
+    {
+        if (attacking) return;
+        StartCoroutine(Atacar());
+    } 
+
+public void objetivo()
     {
         if (FindAnyObjectByType<IA>().request.downloadHandler.text.Contains("\"resultado\": \"Hay 3 troncos recogidos\""))
         {
