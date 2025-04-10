@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class TPDesert : MonoBehaviour
 {
-    [SerializeField] private string nextSceneName = "Nivel 2"; // Nombre de la escena objetivo
 
     private void OnTriggerEnter(Collider other)
     {
@@ -11,7 +10,7 @@ public class TPDesert : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Carga la escena "Nivel 2"
-            SceneManager.LoadScene(nextSceneName);
+            SceneManager.LoadScene("Nivel 2");
         }
     }
 
@@ -21,4 +20,5 @@ public class TPDesert : MonoBehaviour
         Gizmos.color = new Color(0, 1, 0, 0.5f); // Verde semitransparente
         Gizmos.DrawCube(transform.position, transform.localScale);
     }
+    
 }
