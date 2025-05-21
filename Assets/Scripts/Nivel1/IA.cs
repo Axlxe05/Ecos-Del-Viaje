@@ -7,6 +7,7 @@ public class IA : MonoBehaviour
     private string apiUrl = "http://localhost:5000/predecir"; // URL de la API Flask
     private int previousCollectiblesNumber = -1;  // Variable para almacenar el número de troncos anterior
     public UnityWebRequest request;
+    public bool confirmarBosque = false;
     
     // Update is called once per frame
     void Update()
@@ -58,6 +59,7 @@ public class IA : MonoBehaviour
             if (request.downloadHandler.text.Contains("Hay 3 troncos recogidos"))
             {
                 Debug.Log("¡Felicidades! Has recogido 3 troncos.");
+                confirmarBosque = true;
             }
             else
             {

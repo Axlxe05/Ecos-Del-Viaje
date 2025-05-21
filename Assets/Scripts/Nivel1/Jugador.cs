@@ -66,7 +66,7 @@ public class Jugador : MonoBehaviour
             rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
         }
 
-        //Assign animator velocity variable with rigidbody velocity
+        //velocidad del animador al rigidbody
         animator.SetFloat(Velocity, rb.linearVelocity.magnitude);
 
         animator.SetFloat(Jump, rb.linearVelocity.y);
@@ -75,6 +75,7 @@ public class Jugador : MonoBehaviour
 
         // Rotación de la cámara y el personaje
         RotateCameraAndPlayer();
+        
     }
 
     void MoveCamera(Vector3 targetOffset)
@@ -221,11 +222,11 @@ public class Jugador : MonoBehaviour
         StartCoroutine(Atacar());
     } 
 
-public void objetivo()
-    {
-        if (FindAnyObjectByType<IA>().request.downloadHandler.text.Contains("\"resultado\": \"Hay 3 troncos recogidos\""))
+    public void objetivo()
         {
-            Destroy(madera);
+            if (FindAnyObjectByType<IA>().confirmarBosque)
+            {
+                Destroy(madera);
+            }
         }
     }
-}
