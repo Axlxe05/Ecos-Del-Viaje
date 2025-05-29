@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collectible
   - Final
+  - Movible
   layers:
   - Default
   - TransparentFX
