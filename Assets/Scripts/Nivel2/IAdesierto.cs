@@ -15,13 +15,16 @@ public class IAdesierto : MonoBehaviour
     
     [Header("Estado Actual")]
     [Range(0, 100)] public float enemyHealth = 100f;
+    private EnemigoDesierto vidaEnemigoDesierto;
     public bool playerIsAttacking = false;
     private float nextUpdateTime;
     private Animator animator;
+    
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+        vidaEnemigoDesierto = GetComponent<EnemigoDesierto>();
     }
 
     void FixedUpdate()
@@ -32,6 +35,8 @@ public class IAdesierto : MonoBehaviour
             nextUpdateTime = Time.time + updateInterval;
             StartCoroutine(SendCombatData());
         }
+
+        enemyHealth = vidaEnemigoDesierto.vida;
         
         // Ejecutar movimiento continuo (si aplica)
         ExecuteCurrentAction();
