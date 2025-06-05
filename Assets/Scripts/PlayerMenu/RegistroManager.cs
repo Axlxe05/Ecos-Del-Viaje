@@ -14,13 +14,20 @@ public class RegistroManager : MonoBehaviour
     public TMP_InputField imagenInput;   // Campo de imagen (si es una URL o ruta de imagen)
     public TMP_Text mensajeError;        // Texto donde se muestra el error
     public Button botonRegistrar;        // Botón para registrar
+    public Button botonsalir;        // Botón para salir
 
-    private string urlRegistrar = "http://localhost/APIRestPlayerUnity/crud/insertar.php"; // Cambia esto por la URL real
+    private string urlRegistrar = "http://13.219.131.239/APIRestPlayerUnity/crud/insertar.php"; 
 
     void Start()
     {
         // Asignar la función de registro al botón
         botonRegistrar.onClick.AddListener(RegistrarUsuario);
+        botonsalir.onClick.AddListener(volverLogin);
+    }
+
+    public void volverLogin()
+    {
+        SceneManager.LoadScene("LoginPlayerMenu");
     }
 
     // Función que se llama al presionar el botón de "Registrar"
@@ -38,7 +45,7 @@ public class RegistroManager : MonoBehaviour
             nombre = nombreInput.text,
             email = emailInput.text,
             password = passwordInput.text,
-            imagen = imagenInput.text  // La URL o ruta de la imagen
+            imagen = imagenInput.text  
         };
 
         // Convertir el objeto a formato JSON
@@ -50,7 +57,7 @@ public class RegistroManager : MonoBehaviour
             byte[] jsonToSend = new UTF8Encoding().GetBytes(jsonData);
             www.uploadHandler = new UploadHandlerRaw(jsonToSend);
             www.downloadHandler = new DownloadHandlerBuffer();
-            www.SetRequestHeader("Content-Type", "application/json");  // Indicamos que estamos enviando JSON
+            www.SetRequestHeader("Content-Type", "application/json");  
 
             // Esperar la respuesta del servidor
             yield return www.SendWebRequest();
@@ -64,10 +71,8 @@ public class RegistroManager : MonoBehaviour
                 if (json.Contains("\"info\" => \"Jugador/Jugadora Creado!\""))
                 {
                     Debug.Log("Registro exitoso");
-
-                    // Aquí podrías guardar información adicional si lo necesitas (por ejemplo, el ID del usuario)
-                    // Para el ejemplo solo redirigimos a LoginPlayerMenu
-                    SceneManager.LoadScene("LoginPlayerMenu"); // Cambia el nombre de la escena si es necesario
+                    
+                    SceneManager.LoadScene("LoginPlayerMenu"); 
                 }
                 else
                 {

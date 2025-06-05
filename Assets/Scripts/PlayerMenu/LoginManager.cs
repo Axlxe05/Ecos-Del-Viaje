@@ -12,7 +12,7 @@ public class LoginManager : MonoBehaviour
     public TMP_InputField emailInput;
     public TMP_InputField passwordInput;
     public TMP_Text mensajeError;
-    private string urlLogin = "http://localhost/APIRestPlayerUnity/crud/leer.php"; // URL de tu PHP
+    private string urlLogin = "http://13.219.131.239/APIRestPlayerUnity/crud/leer.php"; 
 
     void Start()
     {
@@ -101,5 +101,5 @@ public class Usuario
 [System.Serializable]
 public class ListaUsuarios
 {
-    public Usuario[] usuarios; // Esto será un array de objetos de tipo 'Usuario'
+    public Usuario[] usuarios; 
 }

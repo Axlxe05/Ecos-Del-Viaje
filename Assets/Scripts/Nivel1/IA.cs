@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 public class IA : MonoBehaviour
 {
-    private string apiUrl = "http://localhost:5000/predecir"; // URL de la API Flask
+    private string apiUrl = "http://13.219.131.239:5000/predecir"; // URL de la API Flask
     private int previousCollectiblesNumber = -1;  // Variable para almacenar el número de troncos anterior
     public UnityWebRequest request;
     public bool confirmarBosque = false;
