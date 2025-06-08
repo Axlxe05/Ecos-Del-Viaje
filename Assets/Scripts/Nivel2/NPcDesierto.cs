@@ -47,6 +47,7 @@ public class NPcDesierto : MonoBehaviour
             dialogueUI.SetActive(false);
             alertUIImg.SetActive(false);
             dialogueUIImg.SetActive(false);
+            GetComponent<ApiProgresoDesierto>().GuardarProgreso();
             SceneManager.LoadScene("Nivel 3");
         }
     }
