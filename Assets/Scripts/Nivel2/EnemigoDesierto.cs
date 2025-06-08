@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemigoDesierto : MonoBehaviour
 {
     public int vida = 100;
+    public static int muertes = 0;
 
     public void TakeDamage(int damage)
     {
@@ -18,7 +19,7 @@ public class EnemigoDesierto : MonoBehaviour
     void die()
     {
         Debug.Log("El enemigo ha muerto.");
-        
+        muertes++;
         Destroy(gameObject);
     }
 }

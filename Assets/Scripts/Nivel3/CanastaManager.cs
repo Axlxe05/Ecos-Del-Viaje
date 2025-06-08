@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanastaManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class CanastaManager : MonoBehaviour
         if (goalsReached[0] && goalsReached[1] && goalsReached[2])
         {
             Debug.Log("¡Nivel completado!");
+            SceneManager.LoadScene("Final");
         }
     }
 }
