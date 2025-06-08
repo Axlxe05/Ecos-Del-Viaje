@@ -11,6 +11,7 @@ public class TPDesert : MonoBehaviour
         {
             // Carga la escena "Nivel 2"
             SceneManager.LoadScene("Nivel 2");
+            GetComponent<APiProgreso>().GuardarProgreso();
         }
     }
 

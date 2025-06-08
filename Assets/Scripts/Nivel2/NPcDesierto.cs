@@ -8,6 +8,10 @@ public class NPcDesierto : MonoBehaviour
     public GameObject dialogueUI;  // UI del diálogo
     public GameObject dialogueUIImg;
     private bool isPlayerCerca = false;
+    
+    public GameObject armaPrefab; // Prefab del arma (Firebrand Sword)
+    public Transform manoDerecha; // Transform de B-hand.R
+    private bool armaDada = false;
 
     void Start()
     {
@@ -28,6 +32,12 @@ public class NPcDesierto : MonoBehaviour
             dialogueUIImg.SetActive(true);
             alertUI.SetActive(false);
             alertUIImg.SetActive(false);
+            
+            if (!armaDada)
+            {
+                DarArma();
+                armaDada = true;
+            }
 
         }
 
@@ -41,6 +51,17 @@ public class NPcDesierto : MonoBehaviour
         }
     }
 
+    private void DarArma()
+    {
+        GameObject arma = Instantiate(armaPrefab, manoDerecha);
+        arma.transform.localPosition = Vector3.zero;
+        arma.transform.localRotation = Quaternion.identity;
+
+        // Ajustes finos si tu arma no encaja bien:
+        arma.transform.localPosition = new Vector3(0f, 0f, 0f);  // Ajusta según tu modelo
+        arma.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+    }
+    
     // Detectar cuando el jugador entra en el rango
     private void OnTriggerEnter(Collider other)
     {

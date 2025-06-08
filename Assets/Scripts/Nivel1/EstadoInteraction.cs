@@ -8,7 +8,7 @@ public class EstadoInteraction : MonoBehaviour
     
     void Start()
     {
-        textoDialogo.text = "Necesito que me ayudes a encontrar 3 troncos repartidos en el bosque de atras";
+        textoDialogo.text = "Necesito que me ayudes a encontrar 3 troncos repartidos por la aldea";
     }
 
 

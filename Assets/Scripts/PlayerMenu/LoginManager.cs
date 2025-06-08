@@ -13,7 +13,6 @@ public class LoginManager : MonoBehaviour
     public TMP_InputField passwordInput;
     public TMP_Text mensajeError;
     private string urlLogin = "http://13.219.131.239/APIRestPlayerUnity/crud/leer.php"; 
-
     void Start()
     {
         botonLogin.onClick.AddListener(IniciarSesion);
@@ -85,8 +84,16 @@ public class LoginManager : MonoBehaviour
         
     }
     
+    public static int getIdJugador()
+    {
+        Usuario usuario = new Usuario();
+        return usuario.id;
+    }
+    
     
 }
+
+
 
 [System.Serializable]
 public class Usuario
